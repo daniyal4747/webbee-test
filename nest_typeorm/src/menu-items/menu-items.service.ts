@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { MenuItem } from './entities/menu-item.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { listToTree } from 'src/menu-items/format-data';
 
 @Injectable()
 export class MenuItemsService {
@@ -88,8 +87,31 @@ export class MenuItemsService {
   */
   async getMenuItems() {
     const menuItem = await this.menuItemRepository.find();
-    const treeFormatedData = listToTree(menuItem);
+    const treeFormatedData = this.listToTree(menuItem);
     return treeFormatedData;
   }
+
+    
+   listToTree(list: string | any[]) {
+    const map:any = {};
+    let node: any = [];
+    const roots = [];
+
+    for (let i = 0; i < list.length; i += 1) {
+        map[list[i].id] = i; // initialize the map
+        list[i].children = []; // initialize the children
+    }
+
+    for (let i = 0; i < list.length; i += 1) {
+        node = list[i];
+        if (node.parentId !== null) {
+            // if you have dangling branches check that map[node.parentId] exists
+            list[map[node.parentId]].children.push(node);
+        } else {
+            roots.push(node);
+        }
+    }
+    return roots;
+}
 }
 
