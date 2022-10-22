@@ -1,8 +1,8 @@
-import { Repository,  } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Get, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Event } from './entities/event.entity';
-import { Workshop } from './entities/workshop.entity';
+import { AppDataSource } from 'src/config/typeorm.config-migrations';
 
 @Injectable()
 export class EventsService {
@@ -169,6 +169,11 @@ export class EventsService {
      */
   @Get('futureevents')
   async getFutureEventWithWorkshops() {
-    throw new Error('TODO task 2');
+    return await AppDataSource.getRepository(Event)
+    .createQueryBuilder('event')
+    .innerJoinAndSelect('event.workshops', 'workshop', 'workshop.eventId = event.id')
+    .where("workshop.start >= DATE('now')")
+    .getMany();
+    
   }
 }

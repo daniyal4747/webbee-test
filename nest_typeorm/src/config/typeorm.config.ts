@@ -14,7 +14,7 @@ export const typeOrmAsyncConfig: TypeOrmModuleAsyncOptions = {
       // entities: [join(__dirname, '**', '*.entity.{ts,js}')],
       // entities: [Event],
       database: 'database.db',
-      entities: [__dirname + '/../entities/*.entity.{js,ts}'],
+      entities: [__dirname + '/../**/entities/*.entity.{js,ts}'],
       migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
       //   cli: {
       //     migrationsDir: __dirname + '/../database/migrations',
@@ -35,7 +35,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   // entities: [join(__dirname, '**', '*.entity.{ts,js}')],
   // entities: [Event],
   database: 'database.db',
-  entities: [__dirname + '/../entities/*.entity.{js,ts}'],
+  entities: [__dirname + '/../**/entities/*.entity.{js,ts}'],
   migrations: [__dirname + '/../database/migrations/*{.ts,.js}'],
   //   cli: {
   //     migrationsDir: __dirname + '/../database/migrations',
