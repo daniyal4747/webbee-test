@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { MenuItem } from './entities/menu-item.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { listToTree } from 'src/menu-items/format-data';
 
 @Injectable()
 export class MenuItemsService {
@@ -86,6 +87,9 @@ export class MenuItemsService {
     ]
   */
   async getMenuItems() {
-    throw new Error('TODO in task 3');
+    const menuItem = await this.menuItemRepository.find();
+    const treeFormatedData = listToTree(menuItem);
+    return treeFormatedData;
   }
 }
+

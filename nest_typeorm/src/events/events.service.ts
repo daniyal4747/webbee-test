@@ -1,8 +1,7 @@
-import { Repository } from 'typeorm';
+import { LessThanOrEqual, MoreThanOrEqual, Repository } from 'typeorm';
 import { Get, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Event } from './entities/event.entity';
-import { AppDataSource } from 'src/config/typeorm.config-migrations';
 
 @Injectable()
 export class EventsService {
@@ -169,11 +168,18 @@ export class EventsService {
      */
   @Get('futureevents')
   async getFutureEventWithWorkshops() {
-    return await AppDataSource.getRepository(Event)
-    .createQueryBuilder('event')
-    .innerJoinAndSelect('event.workshops', 'workshop', 'workshop.eventId = event.id')
-    .where("workshop.start >= DATE('now')")
-    .getMany();
+    return this.eventRepository.find({
+      relations: ['workshops'],
+      where: { workshops: { start: MoreThanOrEqual(new Date()) }
+      },
+      order: { workshops: {id: 'ASC' } }
+    });
+
+    // return await AppDataSource.getRepository(Event)
+    // .createQueryBuilder('event')
+    // .innerJoinAndSelect('event.workshops', 'workshop', 'workshop.eventId = event.id')
+    // .where("workshop.start >= DATE('now')")
+    // .getMany();
     
   }
 }
