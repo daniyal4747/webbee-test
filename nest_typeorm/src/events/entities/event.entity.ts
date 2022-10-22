@@ -12,8 +12,6 @@ export class Event {
   @Column({ type: 'datetime' })
   createdAt: string;
 
-  @OneToMany(() => Workshop, (workshop) => workshop.event, {
-    eager: true
-  })
+  @OneToMany(() => Workshop, (workshop) => workshop.event)
   workshops: Workshop[]
 }

@@ -95,7 +95,8 @@ export class EventsService {
   @Get('events')
   async getEventsWithWorkshops() {
     return this.eventRepository.find({
-      relations: ['workshops']
+      relations: ['workshops'],
+      order: { workshops: {id: 'ASC' } }
     });
 
   }
